@@ -1,9 +1,41 @@
+# global variables
+data $zero = { l 0 }
+data $result = { b "Collatz result = %d\n", b 0 }
+
+
+function l $collatz(l %n)
+{
+@start
+	%count =l loadl $zero
+
+@loop
+	%cmp =l ceql %n, 1
+	jnz %cmp, @done, @cont
+@cont
+	%r =l urem %n, 2
+	%cmp =l ceql %r, 0
+	jnz %cmp, @even, @odd
+
+@even
+	%count =l add %count, 1
+	%n =l div %n, 2
+	jmp @loop
+
+@odd
+	%count =l add %count, 1
+	%n =l mul %n, 3
+	%n =l add %n, 1
+	jmp @loop
+
+@done
+	ret %count
+}
+
 export function w $main()
 {
 @start
-	call $printf(l $fmt)
+	%r =l call $collatz(l 27)
+	# call $print(l $string, w 1)
+	call $printf(l $result, ..., l %r)
 	ret 0
 }
-
-data $fmt = { b "Hello, World!\n", b 0 }  # string literal
-# strings can also be { b "Hello, World!\n\0" } - removes need for 'b 0'
