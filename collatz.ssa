@@ -1,8 +1,9 @@
 export function w $main()
 {
 @start
-	call $printf(l $fmt, ...)
+	call $printf(l $fmt)
 	ret 0
 }
 
-data $fmt = { b "Hello, World!\n", b 0 }
+data $fmt = { b "Hello, World!\n", b 0 }  # string literal
+# strings can also be { b "Hello, World!\n\0" } - removes need for 'b 0'
